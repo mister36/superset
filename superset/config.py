@@ -30,6 +30,7 @@ import json
 import logging
 import os
 import re
+import secrets
 import sys
 from collections import OrderedDict
 from contextlib import contextmanager
@@ -51,7 +52,6 @@ from sqlalchemy.orm.query import Query
 from superset.advanced_data_type.plugins.internet_address import internet_address
 from superset.advanced_data_type.plugins.internet_port import internet_port
 from superset.advanced_data_type.types import AdvancedDataType
-from superset.constants import CHANGE_ME_SECRET_KEY
 from superset.jinja_context import BaseTemplateProcessor
 from superset.key_value.types import JsonKeyValueCodec
 from superset.stats_logger import DummyStatsLogger
@@ -230,8 +230,12 @@ HASH_ALGORITHM_FALLBACKS: list[Literal["md5", "sha256"]] = ["md5"]
 # Your App secret key. Make sure you override it on superset_config.py
 # or use `SUPERSET_SECRET_KEY` environment variable.
 # Use a strong complex alphanumeric string and use a tool to help you generate
-# a sufficiently random sequence, ex: openssl rand -base64 42"
-SECRET_KEY = os.environ.get("SUPERSET_SECRET_KEY") or CHANGE_ME_SECRET_KEY
+# a sufficiently random sequence, ex: openssl rand -base64 42
+#
+# IMPORTANT: Operators MUST set a persistent SECRET_KEY for production deployments.
+# If no key is explicitly configured, a random key is generated at startup,
+# which means sessions and cookies will not persist across server restarts.
+SECRET_KEY = os.environ.get("SUPERSET_SECRET_KEY") or secrets.token_hex(32)
 
 # The SQLAlchemy connection string.
 SQLALCHEMY_DATABASE_URI = (
