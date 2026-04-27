@@ -2142,6 +2142,13 @@ TALISMAN_ENABLED = utils.cast_to_boolean(os.environ.get("TALISMAN_ENABLED", True
 # https://superset.apache.org/docs/configuration/networking-settings/#changing-flask-talisman-csp
 
 TALISMAN_CONFIG = {
+    "force_https": False,
+    "session_cookie_secure": False,
+    "x_content_type_options": True,
+    "frame_options": "DENY",
+    "strict_transport_security": True,
+    "strict_transport_security_max_age": 31556926,
+    "strict_transport_security_include_subdomains": True,
     "content_security_policy": {
         "base-uri": ["'self'"],
         "default-src": ["'self'"],
@@ -2184,11 +2191,14 @@ TALISMAN_CONFIG = {
         "script-src": ["'self'", "'strict-dynamic'"],
     },
     "content_security_policy_nonce_in": ["script-src"],
-    "force_https": False,
-    "session_cookie_secure": False,
 }
 # React requires `eval` to work correctly in dev mode
 TALISMAN_DEV_CONFIG = {
+    "force_https": False,
+    "session_cookie_secure": False,
+    "x_content_type_options": True,
+    "frame_options": "DENY",
+    "strict_transport_security": False,
     "content_security_policy": {
         "base-uri": ["'self'"],
         "default-src": ["'self'"],
@@ -2231,8 +2241,6 @@ TALISMAN_DEV_CONFIG = {
         "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
     },
     "content_security_policy_nonce_in": ["script-src"],
-    "force_https": False,
-    "session_cookie_secure": False,
 }
 
 #
